@@ -8,12 +8,13 @@ class solver():
         self.numItems = len(self.sortedItems)
         self.capacity = capacity
         self.bestSolution = solution(0, self.capacity)
-        self.SolQueye = [(solution(0, self.capacity),0)]
+        self.SolQueye = set([(solution(0, self.capacity),0)])
 
     def isOptimisitcBetter(self, sol, newItemIdx):
+
         ItemValuePerWeight = self.ItemValuePerWeight[newItemIdx]
         rhs = sol.value + (sol.capacity*ItemValuePerWeight)
-        return ( 0.95*rhs > self.bestSolution.value )
+        return ( rhs > self.bestSolution.value )
 
     def explore(self):
         if self.SolQueye:
@@ -32,18 +33,17 @@ class solver():
         if thisSol.addItem(newItem):
             if thisSol.value > self.bestSolution.value:
                 self.bestSolution = thisSol
-            self.SolQueye.append((thisSol, itemIndex+1))
+            self.SolQueye.add((thisSol, itemIndex+1))
 
     def exploreRight(self, sol, itemIndex):
         if itemIndex+1<self.numItems:
             if self.isOptimisitcBetter(sol, itemIndex+1):
-                self.SolQueye.append((sol, itemIndex+1))
+                self.SolQueye.add((sol, itemIndex+1))
 
     def solveWrapper(self):
         while self.explore():
-             pass
-             # self.SolQueye  = list(filter(self.isOptimisitcBetter(sol, itemIndex) self.SolQueye ,:
-
+            pass
+    
 
 class solution():
     def __init__(self, value, capacity, items=set()):
